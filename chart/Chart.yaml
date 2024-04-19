@@ -20,6 +20,6 @@ version: 0.3.7
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: generation
+appVersion: v1.2.4-dave
 # icon
 icon: "https://www.apache.org/logos/res/druid/druid-1.png"
