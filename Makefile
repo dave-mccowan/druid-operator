@@ -92,7 +92,12 @@ docker-push-local-test: ## Push docker image with the manager to kind registry.
 .PHONY: deploy-testjob
 deploy-testjob: ## Run a wikipedia test pod
 	kubectl create job wiki-test --image=${IMG_KIND}:${TEST_IMG_TAG}  -- sh /wikipedia-test.sh
-	bash e2e/monitor-task.sh
+	JOB_ID="wiki-test" bash e2e/monitor-task.sh
+
+.PHONY: deploy-testingestionjob
+deploy-testingestionjob: ## wait for the druidIngestion to complete and then verify dataset
+	kubectl create job ingestion-test --image=${IMG_KIND}:${TEST_IMG_TAG}  -- sh /druid-ingestion-test.sh ${TASK_ID}
+	JOB_ID="ingestion-test" bash e2e/monitor-task.sh
 
 .PHONY: helm-install-druid-operator
 helm-install-druid-operator: ## Helm install to deploy the druid operator
@@ -221,7 +226,7 @@ ENVTEST ?= $(LOCALBIN)/setup-envtest
 
 ## Tool Versions
 KUSTOMIZE_VERSION ?= v3.8.7
-CONTROLLER_TOOLS_VERSION ?= v0.11.2
+CONTROLLER_TOOLS_VERSION ?= v0.14.0
 GEN_CRD_API_REF_VERSION ?= v0.3.0
 
 KUSTOMIZE_INSTALL_SCRIPT ?= "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
